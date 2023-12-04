@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-
+import { useLocation, useHistory } from "react-router-dom";
+import {next, previous} from "../utils/date-time";
 /**
  * Defines the dashboard page.
  * @param date
@@ -9,6 +10,20 @@ import ErrorAlert from "../layout/ErrorAlert";
  * @returns {JSX.Element}
  */
 function Dashboard({ date }) {
+  let location = useLocation();
+  let history = useHistory();
+  const query = location.search;
+  if (query){
+  const queryParams = new URLSearchParams(query)
+  const newDate = queryParams.get("date")
+  date = newDate;
+ }
+
+ function dateHandler(date){
+  history.push(`/dashboard?date=${date}`)
+  history.go(0)
+ }
+
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
@@ -41,9 +56,9 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
       <div>
-        <button>Previous</button>
-        <button>Today</button>
-        <button>Next</button>
+        <button onClick={() => dateHandler(previous(date))}>Previous</button>
+        <button onClick={()=> history.push("/")}>Today</button>
+        <button onClick={() => dateHandler(next(date))}>Next</button>
       </div>
       <ErrorAlert error={reservationsError} />
       {/* {JSON.stringify(reservations)} */}

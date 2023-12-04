@@ -4,6 +4,9 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
+const today = new Date().toJSON().slice(0, 10);
+const currentDate = new Date();
+const currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
 
 const VALID_PROPERTIES = [
   "first_name",
@@ -54,6 +57,33 @@ const peopleIsValid = (req, res, next) => {
   }
 };
 
+const futureWorkingTimeIsValid = (req, res, next) => {
+  const {data = {}} = req.body;
+  // let reservationHour = data.reservation_time.splice(":")
+  const reservationTime = data.reservation_time;
+  const reservationDate = data.reservation_date;
+  if (reservationTime < "10:30"){
+    next({status:400, message:`Restaurant is closed before 10:30AM. Please select a later time.`})
+  } else if (reservationTime > "21:30"){
+    next({status:400, message: `Restaurant closes at 10:30PM. Please select a time before 9:30PM to accommodate reservation.`})
+  } else if (reservationTime < currentTime && reservationDate === today){
+    next({status:400, message: `Please select a reservation time that is in the future.`})
+  }
+  next();
+}
+
+const futureWorkingDateIsValid = (req, res, next) => {
+  //implement solution to display multiple error messages. Concatenate error messages before using next
+  const {data = {}} = req.body;
+  let reservationDate = new Date(data.reservation_date);
+  if (data.reservation_date < today){
+    next({status: 400, message: `Reservation date must be set in the future.`})
+  } else if(reservationDate.getDay() === 1){
+    next({status: 400, message: `Restaurant closed. Reservation date cannot be a Tuesday.`})
+  } 
+  next();
+}
+
 const dateIsValid = (req, res, next) => {
   const { data = {} } = req.body;
   const date = new Date(data.reservation_date);
@@ -76,8 +106,8 @@ async function create(req, res) {
 }
 
 async function list(req, res) {
-  const date = req.query;
-  const data = await service.list();
+  const date = req.query.date;
+  const data = await service.list(date);
   res.json({ data });
 }
 
@@ -89,6 +119,8 @@ module.exports = {
     peopleIsValid,
     dateIsValid,
     timeIsValid,
+    futureWorkingDateIsValid,
+    futureWorkingTimeIsValid,
     asyncErrorBoundary(create),
   ],
 };
