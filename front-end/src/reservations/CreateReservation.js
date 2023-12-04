@@ -10,31 +10,34 @@ export default function CreateReservation() {
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: "",
+    people: 1
   };
   const [reservation, setReservation] = useState(initialFormState);
 
   const history = useHistory();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = ( event ) => {
     event.preventDefault();
-    console.log(reservation)
-    createReservation(reservation);
-    setReservation(initialFormState);
-    history.push("/");
+    createReservation(reservation)
+    // .then(history.push("/")).then(history.go(0));
   };
+
+
   const handleChange = ({target}) => {
     const value = target.value;
     setReservation({
         ...reservation, 
         [target.name]:value
     })
-    console.log(reservation)
   }
-
   return (
     <>
-      <ReservationForm handleSubmit={handleSubmit} reservation={reservation} handleChange={handleChange}/>
+      <h3>Create New Reservation</h3>
+      <ReservationForm
+        handleSubmit={handleSubmit}
+        reservation={reservation}
+        handleChange={handleChange}
+      />
     </>
   );
 }

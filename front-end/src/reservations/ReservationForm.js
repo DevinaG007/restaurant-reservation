@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-export default function ReservationForm(handleSubmit, reservation, handleChange){
+function ReservationForm({handleSubmit, reservation, handleChange}){
     const history = useHistory();
     const cancelReservation = (event) => {
         event.preventDefault();
@@ -10,10 +10,9 @@ export default function ReservationForm(handleSubmit, reservation, handleChange)
 
     return (
         <main>
-            <h2>New Reservation</h2>
-        <form onSubmit={() => handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <label htmlFor="first_name">First Name
-            <input id = "first_name" name="first_name" type="text" value={reservation.first_name} onChange={handleChange}/>
+            <input id="first_name" name="first_name" type="text" value={reservation.first_name} onChange={handleChange}/>
             </label>
             <label htmlFor="last_name">Last Name
             <input id="last_name" name="last_name" type="text" value={reservation.last_name} onChange={handleChange}/>
@@ -28,7 +27,7 @@ export default function ReservationForm(handleSubmit, reservation, handleChange)
             <input  id="reservation_time" name="reservation_time" type="time" value={reservation.reservation_time} onChange={handleChange}/>
             </label>
             <label htmlFor="people">Party Size
-            <input id="people" name="people" type="text" value={reservation.people}/>
+            <input id="people" name="people" type="number" value={reservation.people} onChange={handleChange}/>
             </label>
             <button type="submit">Submit</button>
             <button onClick={cancelReservation}>Cancel</button>
@@ -36,3 +35,6 @@ export default function ReservationForm(handleSubmit, reservation, handleChange)
         </main>
     )
 };
+
+
+export default ReservationForm;

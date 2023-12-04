@@ -20,7 +20,7 @@ headers.append("Content-Type", "application/json");
  * This function is NOT exported because it is not needed outside of this file.
  *
  * @param url
- *  the url for the requst.
+ *  the url for the request.
  * @param options
  *  any options for fetch
  * @param onCancel
@@ -32,13 +32,13 @@ headers.append("Content-Type", "application/json");
 async function fetchJson(url, options, onCancel) {
   try {
     const response = await fetch(url, options);
-
+    console.log(options)
     if (response.status === 204) {
       return null;
     }
 
     const payload = await response.json();
-
+    
     if (payload.error) {
       return Promise.reject({ message: payload.error });
     }
@@ -71,10 +71,13 @@ export async function listReservations(params, signal) {
 export async function createReservation(reservation, signal){
   const url = `${API_BASE_URL}/reservations`;
   const options = {
-    method: "POST", 
-    headers, 
-    body: JSON.stringify(reservation),
-    signal
+    method: "POST",
+    headers,
+    body: JSON.stringify({data: reservation}),
+    signal,
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options)
+  // .then(formatReservationDate)
+  // .then(formatReservationTime);
 }
+

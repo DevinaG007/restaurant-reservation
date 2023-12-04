@@ -23,14 +23,45 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  const reservationsList = reservations.map(((reservation) => (
+    <tr key={reservation.id}>
+      <td>{reservation.first_name}</td>
+      <td>{reservation.last_name}</td>
+      <td>{reservation.reservation_date}</td>
+      <td>{reservation.reservation_time}</td>
+      <td>{reservation.mobile_number}</td>
+      <td>{reservation.people}</td>
+    </tr>
+  )))
+
   return (
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+        <h4 className="mb-0">Reservations for date: {date}</h4>
+      </div>
+      <div>
+        <button>Previous</button>
+        <button>Today</button>
+        <button>Next</button>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+      {/* {JSON.stringify(reservations)} */}
+      <table>
+        <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Reservation Date</th>
+          <th>Reservation Time</th>
+          <th>Mobile Number</th>
+          <th>Party Size</th>
+        </tr>
+        </thead>
+        <tbody>
+        {reservationsList}
+        </tbody>
+      </table>
     </main>
   );
 }
