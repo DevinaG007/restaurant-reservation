@@ -8,6 +8,8 @@ const today = new Date().toJSON().slice(0, 10);
 const currentDate = new Date();
 const currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
 
+//Middleware input validation functions
+
 const VALID_PROPERTIES = [
   "first_name",
   "last_name",
@@ -100,6 +102,17 @@ const dateIsValid = (req, res, next) => {
   }
 };
 
+async function reservationExists (req, res, next){
+const reservation = await service.read(req.params.reservationId);
+if (reservation){
+  res.locals.reservation = reservation;
+  return next();
+} 
+next({status:404, message:`Reservation cannot be found.`})
+}
+
+//Functions that handle HTTP Request Methods and send requests to database
+
 async function create(req, res) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
@@ -109,6 +122,11 @@ async function list(req, res) {
   const date = req.query.date;
   const data = await service.list(date);
   res.json({ data });
+}
+
+async function read( res ){
+const {reservation: data} = res.locals;
+res.json({data})
 }
 
 module.exports = {
@@ -123,4 +141,5 @@ module.exports = {
     futureWorkingTimeIsValid,
     asyncErrorBoundary(create),
   ],
+  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)]
 };
