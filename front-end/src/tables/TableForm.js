@@ -3,12 +3,7 @@ import { useHistory } from "react-router-dom";
 
 export default function TableForm({handleChange, handleSubmit, table}){
     const history = useHistory();
-
-    const handleCancel = (event) => {
-        event.preventDefault();
-        history.go(0)
-    }
-    
+ 
     return (
         <>
         <main>
@@ -22,7 +17,7 @@ export default function TableForm({handleChange, handleSubmit, table}){
                     <input id="capacity" name="capacity" type="number" value={table.capacity} onChange={handleChange} required/>
                 </label>
                 <button type="submit">Submit</button>
-                <button onClick={handleCancel}>Cancel</button>
+                <button onClick={() => history.go(-1)}>Cancel</button>
             </form>
         </main>
         </>

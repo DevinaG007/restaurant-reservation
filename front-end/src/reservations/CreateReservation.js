@@ -16,7 +16,6 @@ export default function CreateReservation() {
   const [reservation, setReservation] = useState(initialFormState);
   const [reservationError, setReservationError] = useState(null);
   const history = useHistory();
-  // const currentDate = today();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,6 +38,7 @@ export default function CreateReservation() {
       [target.name]: value,
     });
   };
+
   return (
     <>
       <h3>Create New Reservation</h3>

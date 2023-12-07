@@ -21,8 +21,15 @@ function read(reservationId){
   .first()
 }
 
+function destroy(tableReservationId){
+  return knex("reservations")
+  .where({"reservation_id": tableReservationId})
+  .del();  
+}
+
 module.exports = {
   list,
   create,
-  read
+  read,
+  delete: [destroy]
 };

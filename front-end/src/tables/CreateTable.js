@@ -8,7 +8,7 @@ export default function CreateTable(){
     const history = useHistory();
     const initialFormState = {
         "table_name": "",
-        "capacity": 1
+        "capacity": ""
     }
     const [table, setTable] = useState(initialFormState);
     const [tableError, setTableError] = useState(null);
@@ -20,14 +20,14 @@ export default function CreateTable(){
             [target.name]:value
         })
     }
-    console.log(table.table_name)
+
     const handleSubmit = async (event) => {
+        table.capacity = Number(table.capacity);
         event.preventDefault();
         try {
            let created = await createTable(table);
            if (created){
             history.push("/")
-            history.go(0)
            }
         } catch(error){
             setTableError(error)

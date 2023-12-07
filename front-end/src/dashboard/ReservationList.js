@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import {next, previous} from "../utils/date-time";
 
-export default function ReservationList({ reservations, date, tables }) {
+export default function ReservationList({ reservations, date }) {
     let history = useHistory();
 
 
@@ -20,7 +20,8 @@ export default function ReservationList({ reservations, date, tables }) {
       <td>{reservation.reservation_time}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.people}</td>
-      <td><button><a href={`/reservations/${reservation.reservation_id}/seat`}>Seat</a></button></td>
+      <td>
+      <a href={`/reservations/${reservation.reservation_id}/seat`}><button>Seat</button></a></td>
     </tr>
     </>
   ));

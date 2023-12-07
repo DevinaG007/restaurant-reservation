@@ -124,9 +124,9 @@ async function list(req, res) {
   res.json({ data });
 }
 
-async function read( res ){
+function read( req, res ){
 const {reservation: data} = res.locals;
-res.json({data})
+res.status(200).json({data})
 }
 
 module.exports = {
@@ -141,5 +141,5 @@ module.exports = {
     futureWorkingTimeIsValid,
     asyncErrorBoundary(create),
   ],
-  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)]
+  read: [asyncErrorBoundary(reservationExists), read],
 };

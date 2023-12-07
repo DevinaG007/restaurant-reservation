@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationList from "./ReservationList";
 import TablesList from "./TablesList";
@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date, tables, tablesError }) {
+function Dashboard({ date }) {
   let location = useLocation();
   const query = location.search;
   if (query) {
@@ -21,11 +21,10 @@ function Dashboard({ date, tables, tablesError }) {
 
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  // const [tables, setTables] = useState([]);
-  // const [tablesError, setTablesError] = useState([]);
+  const [tables, setTables] = useState([]);
 
   useEffect(loadDashboard, [date]);
-  // useEffect(loadTables);
+  useEffect(loadTables, []);
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -36,14 +35,14 @@ function Dashboard({ date, tables, tablesError }) {
     return () => abortController.abort();
   }
 
-  // function loadTables(){
-  //   const abortController = new AbortController();
-  //   setReservationsError(null);
-  //   listTables(abortController.signal)
-  //   .then(setTables)
-  //   .catch(setTablesError);
-  //   return () => abortController.abort();
-  // }
+  function loadTables(){
+    const abortController = new AbortController();
+    setReservationsError(null);
+    listTables(abortController.signal)
+    .then(setTables)
+    .catch(setReservationsError);
+    return () => abortController.abort();
+  }
 
 
 
@@ -54,7 +53,6 @@ function Dashboard({ date, tables, tablesError }) {
         <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <ErrorAlert error={tablesError} />
       {/* {JSON.stringify(reservations)} */}
       <ReservationList reservations={reservations} date={date} tables={tables}/>
       <TablesList tables={tables}/>
