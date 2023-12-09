@@ -32,7 +32,7 @@ headers.append("Content-Type", "application/json");
 async function fetchJson(url, options, onCancel) {
   try {
     const response = await fetch(url, options);
-    console.log(options)
+    console.log(options.body)
     if (response.status === 204) {
       return null;
     }
@@ -68,13 +68,12 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-// export async function getReservationsByNumber(mobileNumber){
 
-// }
-
-export async function readReservation(signal){
-  const url = `${API_BASE_URL}/reservations/reservationId`;
-  return await fetchJson(url, {headers, signal})
+export async function readReservation(reservationId, signal){
+  const url = `${API_BASE_URL}/reservations/${reservationId}`;
+  return await fetchJson(url, {headers, signal}, {})
+  .then(formatReservationTime)
+  .then(formatReservationDate)
 }
 
 export async function updateReservation(reservationId, status, signal){
@@ -86,6 +85,17 @@ export async function updateReservation(reservationId, status, signal){
     signal
   }
   return fetchJson(url, options, signal)
+}
+
+export async function editReservation(reservation, signal){
+  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({data: reservation}),
+    signal,
+  };
+  return await fetchJson(url, options)
 }
 
 export async function createReservation(reservation, signal){
