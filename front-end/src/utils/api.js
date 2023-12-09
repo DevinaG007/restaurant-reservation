@@ -32,7 +32,6 @@ headers.append("Content-Type", "application/json");
 async function fetchJson(url, options, onCancel) {
   try {
     const response = await fetch(url, options);
-    console.log(options.body)
     if (response.status === 204) {
       return null;
     }
@@ -125,8 +124,9 @@ export async function createTable(table, signal){
   return await fetchJson(url, options)
 }
 
-export async function updateTable(table, reservationId, signal){
-  const url = `${API_BASE_URL}/tables/${table}/seat`;
+export async function updateTable(tableId, reservationId, signal){
+  console.log(tableId)
+  const url = `${API_BASE_URL}/tables/${tableId}/seat`;
   const options = {
     method: "PUT",
     headers,
@@ -142,7 +142,6 @@ export async function deleteReservation(table, signal){
     method: "DELETE",
     signal
   }
-
   return await fetchJson(url, options)
 }
 

@@ -7,7 +7,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 export default function SeatReservation() {
   const {reservationId} = useParams();
   const history = useHistory();
-  const [seatTable, setSeatTable] = useState({});
+  const [seatTable, setSeatTable] = useState(null);
   const [seatError, setSeatError] = useState(null);
   const [tables, setTables] = useState([]);
 
@@ -28,8 +28,8 @@ export default function SeatReservation() {
     return () => abortController.abort();
   }
 
-  function seatReservation(reservationId, status){
-    updateReservation(reservationId, status);
+  async function seatReservation(reservationId, status){
+   await updateReservation(reservationId, status);
  }
 
  const handleSubmit = async (event) => {
@@ -57,6 +57,7 @@ export default function SeatReservation() {
       <label>
         Table Number
         <select id="table_id" name="table_id" onChange={handleChange} required>
+          <option value={null}>Select a table</option>
           {selectTable}
         </select>
       </label>

@@ -20,7 +20,7 @@ export default function ReservationList({ reservations }) {
   function displayEditButton(reservation) {
     if (reservation.status === "booked") {
       return (
-        <div>
+        <>
           <td>
             <a href={`/reservations/${reservation.reservation_id}/edit`}>
               <button>Edit</button>
@@ -34,7 +34,7 @@ export default function ReservationList({ reservations }) {
               Cancel
             </button>
           </td>
-        </div>
+          </>
       );
     }
   }

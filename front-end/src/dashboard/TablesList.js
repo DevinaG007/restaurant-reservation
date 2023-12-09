@@ -13,14 +13,15 @@ export default function TablesList({ tables }) {
     </tr>
   ));
 
-  function finishReservation(table){
+ async function finishReservation(table){
     if (
     window.confirm("Is this table ready to seat new guests? This cannot be undone.")
     ){
-      updateReservation(table.reservation_id, "finished")
-      .then(() => deleteReservation(table))
-      .then(() => listTables())
-      .then(history.go(0))
+     const deleted = await deleteReservation(table);
+      if (deleted){
+        updateReservation(table.reservation_id, "finished")
+        .then(history.go(0))
+      }
     } else {
       history.go(0)
     }

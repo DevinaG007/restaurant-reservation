@@ -2,7 +2,6 @@ const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const reservationService = require("../reservations/reservations.service");
 const hasProperties = require("../errors/hasProperties");
-const reservationsService = require("../reservations/reservations.service");
 
 //Middleware functions
 
@@ -130,14 +129,14 @@ async function update(req, res) {
 
 async function deleteReservation(req, res, next) {
   const { table } = res.locals;
-  const {reservation} = res.locals;
+  const reservation = await reservationService.read(table.reservation_id);
   const updatedTable = {
     ...table,
     reservation_id: null,
   };
   await reservationService.update({...reservation, status: "finished"})
-  const updated = await service.update(updatedTable);
-  res.status(200).json({ updated });
+  const data = await service.update(updatedTable);
+  res.status(200).json({ data });
 }
 
 module.exports = {
@@ -158,7 +157,6 @@ module.exports = {
   ],
   delete: [
     asyncErrorBoundary(tableExists),
-    asyncErrorBoundary(reservationExists),
     checkIfTableIsOccupied,
     asyncErrorBoundary(deleteReservation),
   ],
