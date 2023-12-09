@@ -1,38 +1,43 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import {next, previous} from "../utils/date-time";
 
-export default function ReservationList({ reservations, date }) {
-    let history = useHistory();
+export default function ReservationList({ reservations }) {
 
-
-  function dateHandler(date) {
-    history.push(`/dashboard?date=${date}`);
-    history.go(0);
+  function displaySeatButton(reservation){
+    if (reservation.status === "booked" ) {
+      return (
+      <td>
+      <a href={`/reservations/${reservation.reservation_id}/seat`}>
+        <button>
+          Seat
+        </button>
+      </a>
+    </td> 
+)
+}
   }
 
-  const reservationsList = reservations.map((reservation) => (
+  const reservationsList = reservations.map((reservation) => {
+    if (reservation.status !== "finished") {
+    return (
     <>
-    <tr key={reservation.id}>
-      <td>{reservation.first_name}</td>
-      <td>{reservation.last_name}</td>
-      <td>{reservation.reservation_date}</td>
-      <td>{reservation.reservation_time}</td>
-      <td>{reservation.mobile_number}</td>
-      <td>{reservation.people}</td>
-      <td>
-      <a href={`/reservations/${reservation.reservation_id}/seat`}><button>Seat</button></a></td>
-    </tr>
+      <tr key={reservation.id}>
+        <td>{reservation.first_name}</td>
+        <td>{reservation.last_name}</td>
+        <td>{reservation.reservation_date}</td>
+        <td>{reservation.reservation_time}</td>
+        <td>{reservation.mobile_number}</td>
+        <td>{reservation.people}</td>
+        <td data-reservation-id-status={reservation.reservation_id}>
+          {reservation.status}
+        </td>
+        {displaySeatButton(reservation)}
+      </tr>
     </>
-  ));
+  )}
+});
 
   return (
     <>
-      <div>
-        <button onClick={() => dateHandler(previous(date))}>Previous</button>
-        <button onClick={() => history.push("/")}>Today</button>
-        <button onClick={() => dateHandler(next(date))}>Next</button>
-      </div>
       <table>
         <thead>
           <tr>
@@ -42,6 +47,7 @@ export default function ReservationList({ reservations, date }) {
             <th>Reservation Time</th>
             <th>Mobile Number</th>
             <th>Party Size</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>{reservationsList}</tbody>

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { updateTable } from "../utils/api";
-import { listTables } from "../utils/api";
+import { listTables, updateReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 export default function SeatReservation() {
@@ -28,10 +28,15 @@ export default function SeatReservation() {
     return () => abortController.abort();
   }
 
+  function seatReservation(reservationId, status){
+    updateReservation(reservationId, status);
+ }
+
  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const updated = await updateTable(seatTable, reservationId);
+      seatReservation(reservationId, "seated")
       if (updated){
         history.push("/");
       }

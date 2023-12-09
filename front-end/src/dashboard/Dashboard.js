@@ -3,7 +3,8 @@ import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationList from "./ReservationList";
 import TablesList from "./TablesList";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
+import { next, previous } from "../utils/date-time";
 /**
  * Defines the dashboard page.
  * @param date
@@ -17,6 +18,13 @@ function Dashboard({ date }) {
     const queryParams = new URLSearchParams(query);
     const newDate = queryParams.get("date");
     date = newDate;
+  }
+
+  let history = useHistory();
+
+  function dateHandler(date) {
+    history.push(`/dashboard?date=${date}`);
+    history.go(0);
   }
 
   const [reservations, setReservations] = useState([]);
@@ -51,6 +59,11 @@ function Dashboard({ date }) {
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date: {date}</h4>
+      </div>
+      <div>
+        <button onClick={() => dateHandler(previous(date))}>Previous</button>
+        <button onClick={() => history.push("/")}>Today</button>
+        <button onClick={() => dateHandler(next(date))}>Next</button>
       </div>
       <ErrorAlert error={reservationsError} />
       {/* {JSON.stringify(reservations)} */}

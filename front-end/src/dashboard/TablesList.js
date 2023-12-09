@@ -1,6 +1,6 @@
 import React from "react";
 import {useHistory} from "react-router-dom";
-import {listTables, deleteReservation} from "../utils/api";
+import {listTables, deleteReservation, updateReservation} from "../utils/api";
 
 export default function TablesList({ tables }) {
   const history = useHistory();
@@ -17,7 +17,8 @@ export default function TablesList({ tables }) {
     if (
     window.confirm("Is this table ready to seat new guests? This cannot be undone.")
     ){
-      deleteReservation(table)
+      updateReservation(table.reservation_id, "finished")
+      .then(() => deleteReservation(table))
       .then(() => listTables())
       .then(history.go(0))
     } else {

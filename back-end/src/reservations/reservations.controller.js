@@ -108,8 +108,31 @@ if (reservation){
   res.locals.reservation = reservation;
   return next();
 } 
-next({status:404, message:`Reservation cannot be found.`})
+next({status:404, message:`Reservation ${req.params.reservationId} cannot be found.`})
 }
+
+function statusIsValid(req, res, next){
+  const {data = {}} = req.body;
+  if (data.status === "finished" || data.status === "seated"){
+    return next({status:400, message:`Invalid status ${data.status}.`})
+  }
+  next();
+}
+
+function updatedStatusIsValid(req, res, next){
+  const {reservation} = res.locals;
+   if (reservation.status === "finished"){
+    return next ({status:400, message:`Reservation status cannot be finished.`})
+  }
+  else if (reservation.status === "seated" && req.body.data.status === "seated"){
+    return next({status:400, message:`Reservation status is already ${reservation.status}`})
+  }
+   else if (!["booked", "seated", "finished"].includes(req.body.data.status)){
+    return next({status:400, message: `Invalid status ${req.body.data.status}`})
+  }
+  next();
+}
+
 
 //Functions that handle HTTP Request Methods and send requests to database
 
@@ -120,13 +143,30 @@ async function create(req, res) {
 
 async function list(req, res) {
   const date = req.query.date;
+  const mobileNumber = req.query.mobile_number;
+  if (date){
   const data = await service.list(date);
-  res.json({ data });
+  res.json({ data })
+}
+  if (mobileNumber){
+    const data = await service.search(mobileNumber);
+    res.json({data})
+  }
 }
 
 function read( req, res ){
 const {reservation: data} = res.locals;
 res.status(200).json({data})
+}
+
+async function update(req, res, next){
+  const {reservation } = res.locals;
+  const updatedReservation = {
+    ...reservation,
+    ...req.body.data
+  }
+  const data = await service.update(updatedReservation);
+  res.status(200).json({data})
 }
 
 module.exports = {
@@ -139,7 +179,9 @@ module.exports = {
     timeIsValid,
     futureWorkingDateIsValid,
     futureWorkingTimeIsValid,
+    statusIsValid,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
+  update: [asyncErrorBoundary(reservationExists), updatedStatusIsValid, asyncErrorBoundary(update)]
 };
