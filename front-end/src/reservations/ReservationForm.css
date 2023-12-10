@@ -1,0 +1,17 @@
+.justify-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items:stretch;
+}
+ 
+.input {
+    width: 100%;
+}

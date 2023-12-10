@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import ReservationForm from "./ReservationForm";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import "./ReservationForm.css";
+
 
 export default function CreateReservation() {
   const initialFormState = {
@@ -43,6 +45,7 @@ export default function CreateReservation() {
 
   return (
     <>
+      <div className="justify-content">
       <h3>Create New Reservation</h3>
       <ErrorAlert error={reservationError} />
       <ReservationForm
@@ -50,6 +53,7 @@ export default function CreateReservation() {
         reservation={reservation}
         handleChange={handleChange}
       />
+      </div>
     </>
   );
 }

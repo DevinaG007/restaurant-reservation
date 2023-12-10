@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { listReservations } from "../utils/api";
 import ReservationList from "../dashboard/ReservationList";
 import ErrorAlert from "./ErrorAlert";
+import "./Search.css";
 
 //Component renders search page
 
@@ -37,11 +38,11 @@ export default function Search() {
 
   return (
     <>
-      <div>
+      <div className="search">
+        <h3>Search for a Reservation</h3>
         <ErrorAlert error={searchError} />
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form">
           <label htmlFor="mobile_number">
-            Search
             <input
               name="mobile_number"
               id="mobile_number"
@@ -55,8 +56,10 @@ export default function Search() {
             Find
           </button>
         </form>
+        <div>
+        {displayReservations(reservations)}
+        </div>
       </div>
-      {displayReservations(reservations)}
     </>
   );
 }

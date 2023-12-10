@@ -4,6 +4,7 @@ import { readReservation, editReservation } from "../utils/api";
 import formatReservationTime from "../utils/format-reservation-time";
 import { useParams, useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import "./ReservationForm.css";
 
 export default function EditReservation() {
   const history = useHistory();
@@ -50,12 +51,14 @@ export default function EditReservation() {
   };
   if (reservation.reservation_id) return (
     <>
+    <div className="justify-content">
       <ErrorAlert error={reservationError} />
       <ReservationForm
         handleSubmit={handleSubmit}
         reservation={reservation}
         handleChange={handleChange}
       />
+      </div>
     </>
   ); else {
     return "Loading..."

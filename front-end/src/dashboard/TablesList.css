@@ -1,0 +1,25 @@
+.tables {
+ color: black;
+}
+
+th.tables {
+    padding-bottom: 20px;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+tr.tables {
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.justify-table {
+    table-layout: fixed;
+    width: 50%;
+    text-align: center;
+    overflow: auto;
+    margin: 20px;
+}
+
+
+

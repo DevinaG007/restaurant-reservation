@@ -5,6 +5,7 @@ import ReservationList from "./ReservationList";
 import TablesList from "./TablesList";
 import { useLocation, useHistory } from "react-router-dom";
 import { next, previous } from "../utils/date-time";
+import "./Dashboard.css";
 /**
  * Defines the dashboard page.
  * @param date
@@ -55,7 +56,7 @@ function Dashboard({ date }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h2>Dashboard</h2>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
@@ -71,6 +72,7 @@ function Dashboard({ date }) {
         date={date}
         tables={tables}
       />
+      <h4>Tables</h4>
       <TablesList tables={tables} />
     </main>
   );

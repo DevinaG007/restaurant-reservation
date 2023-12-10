@@ -1,0 +1,27 @@
+
+
+th.reservations {
+    padding-bottom: 20px;
+    font-family: sans-serif;
+    font-size: 16px;
+    overflow-wrap: normal;
+}
+
+tr.reservations {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    overflow-wrap: normal;
+    overflow-x: scroll;
+}
+
+td {
+    padding: 5px;
+}
+
+
+.justify-reservations {
+    width: 100%;
+    text-align: center;
+    overflow-x: wrap;
+    margin: 20px;
+}

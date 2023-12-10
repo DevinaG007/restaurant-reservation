@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { updateReservation } from "../utils/api";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import "./ReservationsList.css";
 
 /*Component displays a list of
 reservations on the Dashboard page */
@@ -64,7 +65,7 @@ export default function ReservationList({ reservations }) {
   const reservationsList = reservations.map((reservation) => {
     if (reservation.status !== "finished")
       return (
-        <tr key={reservation.reservation_id}>
+        <tr key={reservation.reservation_id} className="reservations">
           <td>{reservation.first_name}</td>
           <td>{reservation.last_name}</td>
           <td>{reservation.reservation_date}</td>
@@ -86,16 +87,16 @@ export default function ReservationList({ reservations }) {
   return (
     <>
       <ErrorAlert error={reservationError} />
-      <table>
+      <table className="justify-reservations">
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Reservation Date</th>
-            <th>Reservation Time</th>
-            <th>Mobile Number</th>
-            <th>Party Size</th>
-            <th>Status</th>
+            <th className="reservations">First Name</th>
+            <th className="reservations">Last Name</th>
+            <th className="reservations">Reservation Date</th>
+            <th className="reservations">Reservation Time</th>
+            <th className="reservations">Mobile Number</th>
+            <th className="reservations">Party Size</th>
+            <th className="reservations">Status</th>
           </tr>
         </thead>
         <tbody>{reservationsList}</tbody>
