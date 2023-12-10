@@ -18,7 +18,6 @@ import EditReservation from "../reservations/EditReservation";
  */
 
 function Routes() {
-
   return (
     <Switch>
       <Route exact={true} path="/">
@@ -28,19 +27,19 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route exact={true} path="/reservations/new">
-      <CreateReservation/>
+        <CreateReservation />
       </Route>
       <Route exact={true} path="/tables/new">
-      <CreateTable />
+        <CreateTable />
       </Route>
       <Route exact={true} path={`/reservations/:reservationId/seat`}>
-    <SeatReservation />
-    </Route>
-    <Route exact={true} path={`/reservations/:reservation_id/edit`}>
-    <EditReservation />
-    </Route>
+        <SeatReservation />
+      </Route>
+      <Route exact={true} path={`/reservations/:reservation_id/edit`}>
+        <EditReservation />
+      </Route>
       <Route path="/dashboard">
-        <Dashboard date={today()}/>
+        <Dashboard date={today()} />
       </Route>
       <Route path="/search">
         <Search />

@@ -13,6 +13,7 @@ import "./Layout.css";
  */
 function Layout() {
   return (
+    <div className="layout">
     <div className="container-fluid">
       <div className="row h-100">
         <div className="col-md-2 side-bar">
@@ -22,6 +23,7 @@ function Layout() {
           <Routes />
         </div>
       </div>
+    </div>
     </div>
   );
 }

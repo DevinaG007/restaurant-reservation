@@ -3,7 +3,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const reservationService = require("../reservations/reservations.service");
 const hasProperties = require("../errors/hasProperties");
 
-//Middleware functions
+//Validation middleware functions
 
 async function tableExists(req, res, next) {
   const table = await service.read(req.params.table_id);
@@ -91,24 +91,27 @@ async function checkIfTableIsOccupied(req, res, next) {
   next();
 }
 
-async function checkReservationStatus(req, res, next){
-  const {reservation} = res.locals;
-  if (reservation.status === "seated"){
-    return next({status:400, message:`Reservation has already been seated.`})
+async function checkReservationStatus(req, res, next) {
+  const { reservation } = res.locals;
+  if (reservation.status === "seated") {
+    return next({
+      status: 400,
+      message: `Reservation has already been seated.`,
+    });
   }
   next();
 }
 
 const hasRequiredProperties = hasProperties(["table_name", "capacity"]);
 
-//GET, POST, and PUT HTTP Request handling functions
+//HTTP Request handling functions
 
-async function list(req, res, next) {
+async function list(req, res) {
   const data = await service.list();
   res.json({ data });
 }
 
-async function create(req, res, next) {
+async function create(req, res) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
@@ -122,22 +125,24 @@ async function update(req, res) {
     reservation_id: reservationId,
   };
   const data = await service.update(updatedTable);
-  await reservationService.update({...reservation, status: "seated"});
+  await reservationService.update({ ...reservation, status: "seated" });
 
   res.status(200).json({ data });
 }
 
-async function deleteReservation(req, res, next) {
+async function deleteReservation(req, res) {
   const { table } = res.locals;
   const reservation = await reservationService.read(table.reservation_id);
   const updatedTable = {
     ...table,
     reservation_id: null,
   };
-  await reservationService.update({...reservation, status: "finished"})
+  await reservationService.update({ ...reservation, status: "finished" });
   const data = await service.update(updatedTable);
   res.status(200).json({ data });
 }
+
+
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
@@ -149,10 +154,10 @@ module.exports = {
   ],
   update: [
     asyncErrorBoundary(reservationExists),
-    checkReservationStatus,
+    asyncErrorBoundary(checkReservationStatus),
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(validCapacity),
-    checkTableStatus,
+    asyncErrorBoundary(checkTableStatus),
     asyncErrorBoundary(update),
   ],
   delete: [

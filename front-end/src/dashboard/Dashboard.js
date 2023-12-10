@@ -13,6 +13,7 @@ import { next, previous } from "../utils/date-time";
  */
 function Dashboard({ date }) {
   let location = useLocation();
+  let history = useHistory();
   const query = location.search;
   if (query) {
     const queryParams = new URLSearchParams(query);
@@ -20,7 +21,7 @@ function Dashboard({ date }) {
     date = newDate;
   }
 
-  let history = useHistory();
+  //helper function for next and previous date buttons
 
   function dateHandler(date) {
     history.push(`/dashboard?date=${date}`);
@@ -43,16 +44,14 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  function loadTables(){
+  function loadTables() {
     const abortController = new AbortController();
     setReservationsError(null);
     listTables(abortController.signal)
-    .then(setTables)
-    .catch(setReservationsError);
+      .then(setTables)
+      .catch(setReservationsError);
     return () => abortController.abort();
   }
-
-
 
   return (
     <main>
@@ -67,8 +66,12 @@ function Dashboard({ date }) {
       </div>
       <ErrorAlert error={reservationsError} />
       {/* {JSON.stringify(reservations)} */}
-      <ReservationList reservations={reservations} date={date} tables={tables}/>
-      <TablesList tables={tables}/>
+      <ReservationList
+        reservations={reservations}
+        date={date}
+        tables={tables}
+      />
+      <TablesList tables={tables} />
     </main>
   );
 }

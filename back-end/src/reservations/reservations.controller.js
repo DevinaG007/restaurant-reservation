@@ -1,6 +1,5 @@
-/**
- * List handler for reservation resources
- */
+//File that defines request handling functions and middleware validation functions
+
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
@@ -8,7 +7,7 @@ const today = new Date().toJSON().slice(0, 10);
 const currentDate = new Date();
 const currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
 
-//Middleware input validation functions
+//Middleware POST/PUT validation functions
 
 const VALID_PROPERTIES = [
   "first_name",
@@ -35,6 +34,8 @@ function hasOnlyValidProperties(req, res, next) {
 
 const hasRequiredProperties = hasProperties(VALID_PROPERTIES);
 
+//validate that form field inputs are valid
+
 const timeIsValid = (req, res, next) => {
   const { data = {} } = req.body;
   const time = data.reservation_time;
@@ -46,6 +47,22 @@ const timeIsValid = (req, res, next) => {
       status: 400,
       message: `Invalid. reservation_time must be in correct format.`,
     });
+  }
+};
+
+const dateIsValid = (req, res, next) => {
+  const { data = {} } = req.body;
+  const date = new Date(data.reservation_date);
+
+  if (Object.prototype.toString.call(date) === "[object Date]") {
+    if (isNaN(date.getTime())) {
+      next({
+        status: 400,
+        message: `Invalid. reservation_date must be in date format.`,
+      });
+    } else {
+      return next();
+    }
   }
 };
 
@@ -62,9 +79,46 @@ const peopleIsValid = (req, res, next) => {
   }
 };
 
+function statusIsValid(req, res, next) {
+  const { data = {} } = req.body;
+  if (data.status === "finished" || data.status === "seated") {
+    return next({ status: 400, message: `Invalid status ${data.status}.` });
+  }
+  next();
+}
+
+function updatedStatusIsValid(req, res, next) {
+  const { reservation } = res.locals;
+  if (reservation.status === "finished") {
+    return next({
+      status: 400,
+      message: `Reservation status cannot be finished.`,
+    });
+  } else if (
+    reservation.status === "seated" &&
+    req.body.data.status === "seated"
+  ) {
+    return next({
+      status: 400,
+      message: `Reservation status is already ${reservation.status}`,
+    });
+  } else if (
+    !["booked", "seated", "finished", "cancelled"].includes(
+      req.body.data.status
+    )
+  ) {
+    return next({
+      status: 400,
+      message: `Invalid status ${req.body.data.status}`,
+    });
+  }
+  next();
+}
+
+//Validate that inputs do not violate restaurants business rules
+
 const futureWorkingTimeIsValid = (req, res, next) => {
   const { data = {} } = req.body;
-  // let reservationHour = data.reservation_time.splice(":")
   const reservationTime = data.reservation_time;
   const reservationDate = data.reservation_date;
   if (reservationTime < "10:30") {
@@ -77,7 +131,7 @@ const futureWorkingTimeIsValid = (req, res, next) => {
       status: 400,
       message: `Restaurant closes at 10:30PM. Please select a time before 9:30PM to accommodate reservation.`,
     });
-  } else if ( reservationDate === today && reservationTime < currentTime) {
+  } else if (reservationDate === today && reservationTime < currentTime) {
     next({
       status: 400,
       message: `Please select a reservation time that is in the future.`,
@@ -103,22 +157,6 @@ const futureWorkingDateIsValid = (req, res, next) => {
   next();
 };
 
-const dateIsValid = (req, res, next) => {
-  const { data = {} } = req.body;
-  const date = new Date(data.reservation_date);
-
-  if (Object.prototype.toString.call(date) === "[object Date]") {
-    if (isNaN(date.getTime())) {
-      next({
-        status: 400,
-        message: `Invalid. reservation_date must be in date format.`,
-      });
-    } else {
-      return next();
-    }
-  }
-};
-
 async function reservationExists(req, res, next) {
   const reservation = await service.read(req.params.reservationId);
   if (reservation) {
@@ -129,38 +167,6 @@ async function reservationExists(req, res, next) {
     status: 404,
     message: `Reservation ${req.params.reservationId} cannot be found.`,
   });
-}
-
-function statusIsValid(req, res, next) {
-  const { data = {} } = req.body;
-  if (data.status === "finished" || data.status === "seated") {
-    return next({ status: 400, message: `Invalid status ${data.status}.` });
-  }
-  next();
-}
-
-function updatedStatusIsValid(req, res, next) {
-  const { reservation } = res.locals;
-  if (reservation.status === "finished") {
-    return next({
-      status: 400,
-      message: `Reservation status cannot be finished.`,
-    });
-  } else if (
-    reservation.status === "seated" &&
-    req.body.data.status === "seated"
-  ) {
-    return next({
-      status: 400,
-      message: `Reservation status is already ${reservation.status}`,
-    });
-  } else if (!["booked", "seated", "finished", "cancelled"].includes(req.body.data.status)) {
-    return next({
-      status: 400,
-      message: `Invalid status ${req.body.data.status}`,
-    });
-  }
-  next();
 }
 
 //Functions that handle HTTP Request Methods and send requests to database
@@ -206,6 +212,9 @@ async function edit(req, res, next) {
   res.status(200).json({ data });
 }
 
+/*Async and await functions are wrapped in an async Error Boundary
+in exports */
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -234,7 +243,7 @@ module.exports = {
     timeIsValid,
     futureWorkingDateIsValid,
     futureWorkingTimeIsValid,
-    statusIsValid, 
-    asyncErrorBoundary(edit)
+    statusIsValid,
+    asyncErrorBoundary(edit),
   ],
 };

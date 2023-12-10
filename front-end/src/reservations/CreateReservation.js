@@ -13,6 +13,7 @@ export default function CreateReservation() {
     reservation_time: "",
     people: 1,
   };
+
   const [reservation, setReservation] = useState(initialFormState);
   const [reservationError, setReservationError] = useState(null);
   const history = useHistory();
@@ -20,8 +21,9 @@ export default function CreateReservation() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     reservation.people = Number(reservation.people); 
+    const abortController = new AbortController();
     try {
-      let created = await createReservation(reservation);
+      let created = await createReservation(reservation, abortController.signal);
       if (created){
         history.push(`/dashboard?date=${reservation.reservation_date}`)
         history.go(0)

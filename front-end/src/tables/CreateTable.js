@@ -22,17 +22,20 @@ export default function CreateTable(){
     }
 
     const handleSubmit = async (event) => {
+        const abortController = new AbortController();
         table.capacity = Number(table.capacity);
         event.preventDefault();
         try {
-           let created = await createTable(table);
+           let created = await createTable(table, abortController.signal);
            if (created){
             history.push("/")
            }
         } catch(error){
             setTableError(error)
         }
+        return () => abortController.abort();
     }
+    
     return (
         <>
         <h3>New Table</h3>

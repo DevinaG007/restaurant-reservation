@@ -1,6 +1,8 @@
 const knex = require("../db/connection");
 
-async function create(table){
+//service file defines knex queries made to database
+
+function create(table){
 return knex("tables")
 .insert(table)
 .returning("*")

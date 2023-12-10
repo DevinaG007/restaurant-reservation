@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import ReservationForm from "./ReservationForm";
 import { readReservation, editReservation } from "../utils/api";
 import formatReservationTime from "../utils/format-reservation-time";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 
 export default function EditReservation() {
   const history = useHistory();
-  const location = useLocation();
   const { reservation_id } = useParams();
   const [reservation, setReservation] = useState({});
   const [reservationError, setReservationError] = useState(null);
@@ -26,6 +25,7 @@ export default function EditReservation() {
   console.log(reservation)
 
   const handleSubmit = async (event) => {
+    const abortController = new AbortController();
     event.preventDefault();
     reservation.people = Number(reservation.people);
     try {
@@ -37,6 +37,7 @@ export default function EditReservation() {
     } catch (error) {
       setReservationError(error);
     }
+    return () => abortController.abort()
   };
 
   const handleChange = ({ target }) => {

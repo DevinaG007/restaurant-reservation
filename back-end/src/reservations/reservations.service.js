@@ -1,5 +1,6 @@
 const knex = require("../db/connection");
 
+//service file defines knex database queries for HTTP requests
 
 function create(reservation) {
   return knex("reservations")

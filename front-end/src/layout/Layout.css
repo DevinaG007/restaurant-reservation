@@ -1,4 +1,8 @@
 .side-bar {
-  background-color: #393a44;
-  min-width: 200px;
+  background-color: #BFA992;
+  min-width: 400px;
+}
+
+.layout {
+  background-color: #FAF9F8;
 }

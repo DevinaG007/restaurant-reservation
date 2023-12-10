@@ -29,7 +29,11 @@ export default function SeatReservation() {
   }
 
   async function seatReservation(reservationId, status){
-   await updateReservation(reservationId, status);
+    try {
+   await updateReservation(reservationId, status)
+    } catch(error) {
+      setSeatError(error)
+    }
  }
 
  const handleSubmit = async (event) => {
