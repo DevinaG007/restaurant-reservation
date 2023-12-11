@@ -1,8 +1,19 @@
 # Restaurant Reservation App - Periodic Tables #
 
-## Project Description: ##
+**Link to deployed live application:**
 
-The Restaurant Reservation App provides restaurant managers with an easy and effective way to track and manage reservations.
+[Live Application](https://restaurant-reservations-xxdy.onrender.com/)
+
+**Link to backend server:**
+
+[Backend Server](https://reservation-mfrf.onrender.com)
+
+### Project Description: ###
+
+The Restaurant Reservation App provides restaurant managers with an easy and effective way to track and manage reservations. The application allows restaurant employees to view reservations by date, update the status of a reservation, and seat a reservation at a table. They are able to view reservations on the dashboard alongside a list of tables, with the current status of the table. Restaurant staff can search for and create new reservations, and they are able to create new tables as well.
+
+
+<hr>
 
 Some important features include:
 
@@ -26,6 +37,43 @@ Some important features include:
 <hr>
 
 4. Restaurant employees can search for existing reservations by inputting a customer's phone number. All matching reservations will be returned, regardless of the reservation's status.
-<hr>
+
    
    <img width="1470" alt="search-reservations" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/10623509-aed3-4848-a239-b7f1db47dd76">
+
+<hr>
+
+### Backend Application ###
+
+The backend of the application implements RESTful API strategies. Files are divided by routes. Both the /tables route and the /reservations route include three main files to maintain clean organization:
+
+-**Router:** Specifies routes that can be used, as well as the available HTTP request methods. There is an error handler in place to prevent request methods that are not authorized.
+
+-**Controller:** Contains method handling functions that send the request to the database. Also contains validation middleware to prevent invalid input from the user.
+
+-**Service:** Uses Knex to make database queries using CRUDL functions.
+
+### Technologies Used: ###
+
+Frontend:
+-React.js
+-CSS
+
+Backend:
+-Node.js
+-Express
+-PostgreSQL
+
+### Installation Instructions ###
+
+Fork and clone repository.
+
+
+Run ```npm install``` to install project dependencies.
+Run ```npm run start:dev``` to start your server in development mode.
+
+To run the application's tests:
+
+Run ```npm test``` to run all tests. 
+Run ```npm run test:backend``` to run all the backend tests.
+Run ```npm run test:frontend``` to run all of the frontend tests.
