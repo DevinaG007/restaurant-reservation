@@ -11,20 +11,21 @@ Some important features include:
    
 <img width="1470" alt="reservation-dashboard" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/db1ca061-a1cb-4ddd-9267-d62719122fbd">
   <br>
+<hr>
   
 2. Restaurant managers and employees can create new reservations under the New Reservation tab.
 
 
 <img width="1470" alt="create-reservation" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/82bca69c-bfd8-43b2-9bd2-1a5fc044d1b9">
-
+<hr>
 
 3. New tables can be created under the New Table tab.
 
 
 <img width="1460" alt="create-table" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/08308c7f-28ae-431e-8752-aae3f125c492">
-
+<hr>
 
 4. Restaurant employees can search for existing reservations by inputting a customer's phone number. All matching reservations will be returned, regardless of the reservation's status.
-
+<hr>
    
    <img width="1470" alt="search-reservations" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/10623509-aed3-4848-a239-b7f1db47dd76">
