@@ -7,9 +7,9 @@ The Restaurant Reservation App provides restaurant managers with an easy and eff
 Some important features include:
 
 1. A dashboard on the homepage lists reservations for the current date and displays a list of tables in the restaurant. The manager can also navigate forward and backward to look at reservations from the previous day and for the next day.
-   
+   <br>
 <img width="1470" alt="reservation-dashboard" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/db1ca061-a1cb-4ddd-9267-d62719122fbd">
-  
+  <br>
 2. Restaurant managers and employees can create new reservations under the New Reservation tab.
 
 <img width="1470" alt="create-reservation" src="https://github.com/DevinaG007/restaurant-reservation/assets/137969744/82bca69c-bfd8-43b2-9bd2-1a5fc044d1b9">
