@@ -49,19 +49,25 @@ The backend of the application implements RESTful API strategies. Files are divi
 
 -**Router:** Specifies routes that can be used, as well as the available HTTP request methods. There is an error handler in place to prevent request methods that are not authorized.
 
--**Controller:** Contains method handling functions that send the request to the database. Also contains validation middleware to prevent invalid input from the user.
+-**Controller:** Contains method handling functions that send the request to the database. Also contains validation middleware to prevent invalid input from the user. The restaurant's business rules are enforced in the middleware and will be displayed in the UI if the user violates any rules.
 
 -**Service:** Uses Knex to make database queries using CRUDL functions.
 
 ### Technologies Used: ###
 
 Frontend:
+
 -React.js
+
 -CSS
 
+
 Backend:
+
 -Node.js
+
 -Express
+
 -PostgreSQL
 
 ### Installation Instructions ###
