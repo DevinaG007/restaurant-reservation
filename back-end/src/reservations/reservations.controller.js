@@ -3,9 +3,10 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
-const today = new Date().toLocaleString().slice(0, 10);
-const currentDate = new Date().toLocaleString()
-const currentTime = currentDate.slice(12);
+const today = new Date().toJSON().slice(0, 10);
+const currentDate = new Date();
+// const currentTime = currentDate.slice(12);
+const currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
 
 //Middleware POST/PUT validation functions
 
@@ -145,7 +146,6 @@ const futureWorkingTimeIsValid = (req, res, next) => {
 const futureWorkingDateIsValid = (req, res, next) => {
   const { data = {} } = req.body;
   let reservationDate = new Date(data.reservation_date);
-  console.log(currentTime)
   if (data.reservation_date < today) {
     next({
       status: 400,
