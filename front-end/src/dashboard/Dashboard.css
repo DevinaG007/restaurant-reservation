@@ -4,3 +4,23 @@ main {
     justify-content: space-evenly;
     align-items: center;
 }
+
+@media all and (min-width: 1200px){
+    .dashboard {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: stretch;
+    }
+
+    .dashboard-tables {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    th.reservations {
+        padding: 10px;
+    }
+}

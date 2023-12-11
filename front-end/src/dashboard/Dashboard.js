@@ -54,9 +54,12 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+
   return (
     <main>
       <h2>Dashboard</h2>
+      <div className="dashboard">
+      <div className="dashboard-tables">
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
@@ -72,8 +75,12 @@ function Dashboard({ date }) {
         date={date}
         tables={tables}
       />
+      </div>
+      <div className="dashboard-tables">
       <h4>Tables</h4>
       <TablesList tables={tables} />
+      </div>
+      </div>
     </main>
   );
 }

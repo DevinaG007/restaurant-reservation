@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import "../reservations/ReservationForm.css";
 
 export default function TableForm({handleChange, handleSubmit, table}){
     const history = useHistory();
@@ -7,7 +8,7 @@ export default function TableForm({handleChange, handleSubmit, table}){
     return (
         <>
         <main>
-            <form onSubmit={handleSubmit}>
+            <form className="table" onSubmit={handleSubmit}>
                 <label htmlFor="table_name">
                     Table Name
                     <input id="table_name" name="table_name" type="text" value={table.table_name} onChange={handleChange} required/>

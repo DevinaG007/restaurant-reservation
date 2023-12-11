@@ -3,9 +3,9 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
-const today = new Date().toJSON().slice(0, 10);
-const currentDate = new Date();
-const currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
+const today = new Date().toLocaleString().slice(0, 10);
+const currentDate = new Date().toLocaleString()
+const currentTime = currentDate.slice(12);
 
 //Middleware POST/PUT validation functions
 
@@ -131,18 +131,21 @@ const futureWorkingTimeIsValid = (req, res, next) => {
       status: 400,
       message: `Restaurant closes at 10:30PM. Please select a time before 9:30PM to accommodate reservation.`,
     });
-  } else if (reservationDate === today && reservationTime < currentTime) {
+  } else if (reservationDate === today) {
+    if (reservationTime < currentTime){
     next({
       status: 400,
       message: `Please select a reservation time that is in the future.`,
     });
-  }
+ } 
+}
   next();
 };
 
 const futureWorkingDateIsValid = (req, res, next) => {
   const { data = {} } = req.body;
   let reservationDate = new Date(data.reservation_date);
+  console.log(currentTime)
   if (data.reservation_date < today) {
     next({
       status: 400,

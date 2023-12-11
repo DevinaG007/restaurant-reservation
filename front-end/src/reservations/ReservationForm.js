@@ -11,7 +11,7 @@ function ReservationForm({handleSubmit, reservation, handleChange}){
 
     return (
         <main>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="reservations">
             <label htmlFor="first_name">First Name
             <input className="input" id="first_name" name="first_name" type="text" value={reservation.first_name} onChange={handleChange} required/>
             </label>
