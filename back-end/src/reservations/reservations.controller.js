@@ -133,13 +133,13 @@ const futureWorkingTimeIsValid = (req, res, next) => {
       message: `Restaurant closes at 10:30PM. Please select a time before 9:30PM to accommodate reservation.`,
     });
   } else if (reservationDate === today) {
-    if (reservationTime < currentTime){
-    next({
-      status: 400,
-      message: `Please select a reservation time that is in the future.`,
-    });
- } 
-}
+    if (reservationTime < currentTime) {
+      next({
+        status: 400,
+        message: `Please select a reservation time that is in the future.`,
+      });
+    }
+  }
   next();
 };
 
@@ -151,13 +151,24 @@ const futureWorkingDateIsValid = (req, res, next) => {
       status: 400,
       message: `Reservation date must be set in the future.`,
     });
-  } else if (reservationDate.getDay() === 1) {
+  } else if (reservationDate.getUTCDay() === 2) {
     next({
       status: 400,
       message: `Restaurant closed. Reservation date cannot be a Tuesday.`,
     });
   }
   next();
+};
+
+const mobileNumberIsValid = (req, res, next) => {
+  const { data = {} } = req.body;
+  const mobile = data.mobile_number;
+  const regex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/
+  if (regex.test(mobile)){
+    return next();
+  } else {
+    return next({status:400, message: `Incorrect mobile number format. Only numbers are allowed.`})
+  }
 };
 
 async function reservationExists(req, res, next) {
@@ -226,6 +237,7 @@ module.exports = {
     peopleIsValid,
     dateIsValid,
     timeIsValid,
+    mobileNumberIsValid,
     futureWorkingDateIsValid,
     futureWorkingTimeIsValid,
     statusIsValid,
@@ -244,6 +256,7 @@ module.exports = {
     peopleIsValid,
     dateIsValid,
     timeIsValid,
+    mobileNumberIsValid,
     futureWorkingDateIsValid,
     futureWorkingTimeIsValid,
     statusIsValid,
