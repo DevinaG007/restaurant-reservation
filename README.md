@@ -55,14 +55,14 @@ The backend of the application implements RESTful API strategies. Files are divi
 
 ### Technologies Used: ###
 
-Frontend:
+**Frontend:**
 
 -React.js
 
 -CSS
 
 
-Backend:
+**Backend:**
 
 -Node.js
 
